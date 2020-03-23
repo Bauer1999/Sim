@@ -1,0 +1,85 @@
+Proc initbodies
+  Type body
+    JPLid As String*20    'unikt JPL id, eg.
+    navn As String*20     'star/planet/point/sattelite name 'Earth,Moon,Sun,F9B5, cape canaveral
+    dato As String*20     'JPL dataset start date
+    hour As Double        'JPL dataset start hour
+    sideral As Double     'seconds per 2*pi radians, 2*PI/(sec per rev)
+    zenith As Double      'base angle at UTC0 12:00:00 from JPL data for polarvector(earth,sun),polarvector(moon,earth)
+    longtitude0 As Double  '=zenith+sideral*seconds
+    lattitude As Double   'get from JPL
+    
+    m As Double           'mass in kg
+    r As Double           'radius in meter
+    atmosphere As Double  'height of significant atmosphere for drag/friction force
+    dt As Double          'timeresolution in seconds, should be global parameter.
+    x As Double           'x pos in m
+    y As Double           'y pos in m
+    z As Double           'z pos,in m, 0 or real depends on sim detail
+    vx As Double          'delta x in m/s
+    vy As Double          'delta y in m/s
+    vz As Double          'delta z in m/s
+    
+    
+    northx As Double      'JPL northpole relative to x pos
+    northy As Double
+    northz As Double
+    northvx As Double     'JPL northpole speed relative to vx
+    northvy As Double
+    northvz As Double
+    
+    eq0x As Double        'JPL longtitude 0 relative to x pos
+    eq0y As Double
+    eq0z As Double
+    eq0vx As Double       'JPL longtitude 0 speed relative to vx
+    eq0vy As Double
+    eq0vz As Double
+    
+    
+    
+    eq90x As Double       'JPL longtitude 90 relative to x pos
+    eq90y As Double
+    eq90z As Double
+    eq90vx As Double      'JPL longtitude 0 speed relative to vx
+    eq90vy As Double
+    eq90vz As Double
+    
+    eq180x As Double      'JPL longtitude 180 relative to x pos
+    eq180y As Double
+    eq180z As Double
+    eq180vx As Double     'JPL longtitude 180 speed relative to vx
+    eq180vy As Double
+    eq180vz As Double
+    
+    
+    dvx As Double         'tmp delta x in local atmossphere in m/s, refers to x
+    dvy As Double         'tmp delta y in local atmossphere in m/s, refers to y
+    dvz As Double         'tmp delta z in local atmossphere in m/s, refers to z
+    fx As Double          'force per kg vector fx
+    fy As Double          'force per kg vector fy
+    fz As Double          'force per kg vector fz
+    
+    
+    ' Vessel specific parameters, although som can be applied to asteroids even planets as vessels
+    
+    bodytype As Int32     'type body inactive=0/smallmass=1/lagrange=2/station=3
+    location As Int32     'parentobject, placed on object
+    
+    massempty As Double   'Total empty weigth hull+cargo+crew+reserve fuel
+    masswet As Double     'Total weigth hull+cargo+crew+(fuel incl. reserve fuel)
+    m_exhaust As Double   'mass ejected per second
+    v_exhaust As Double   'eject speed in meter per second -> m_exhaust*v_exhaust=total force in Newton
+    
+    program As String*999 'command sequence: "cpu=?? isp=x track(n) 10 thrust=100 end(0) "
+    cpu As Int32          'cpu type for this object
+    ip As Int32           'instruction word pointer command=mid(program,ip)
+    cputik As Int32       'time for next command in event que
+    track As Int32        'GUI lookat, sys relevant object to calculate aginst
+    
+    dragX As Double  'total gas resistence vector x in Newton
+    dragY As Double  'total gas resistence vector y in Newton
+    dragZ As Double  'total gas resistence vector z in Newton
+    
+  EndType
+EndProc
+
